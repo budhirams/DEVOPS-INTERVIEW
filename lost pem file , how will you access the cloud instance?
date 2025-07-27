@@ -1,0 +1,44 @@
+You lost pem file , how will you access the cloud instance?
+
+First question, can you restore the deleted PEM file? Second question, how will you connect to the cloud provider instance? Now this is a tricky question because interviewer is trying to test your understanding of SSH. Before explaining how to answer this question, let me tell you what is a PEM file. If you are not aware, PEM file holds a private key. And private key is used to connect to instance. Through SSH, if you want to connect to any instance, you either need a password or you need a private key. So you pass this option, ssh -i private key user@, instance-IP. So either you need password or you need private key. On the cloud providers, mostly password authentication is disabled. Now that you lost the PEM file, there is absolutely no way to restore it. However, you can still connect to the cloud instance. Let me explain how. And this is how you need to explain the answer to the interviewer. So start with explaining. Now that the PEM file is lost, there is no way to restore the PEM file because cloud providers do not store the PEM file. However, you can get to the user interface of the cloud instance. If you take AWS as an example, there are a bunch of ways to do it. AWS has session manager. AWS has cloud instance connect, that is easy to instance connect. So if one of these options is enabled to your instance, connect to the instance through that option.
+
+ssh-keygen -t rsa
+
+[ec2-user@ip-172-31-16-145 ~]$ cd ~/.ssh/
+[ec2-user@ip-172-31-16-145 .ssh]$ pwd
+/home/ec2-user/.ssh
+
+ll
+authorized_keys
+id_rsa
+id_rsa.pub
+
+now copy id_rsa content to authorized_keys  and save.   using yy and p for directly
+
+now go to in your local system and paste here private key means id_rsa or write in vim id_rsa and paste here private key content
+
+now 
+
+BUDHIRAM SAHANI@LAPTOP-MAV6U7B1 MINGW64 ~/Desktop/key
+$ pwd
+/c/Users/BUDHIRAM SAHANI/Desktop/key
+
+BUDHIRAM SAHANI@LAPTOP-MAV6U7B1 MINGW64 ~/Desktop/key
+$ ll
+total 4
+-rw-r--r-- 1 BUDHIRAM SAHANI 197121 2635 Jul 27 23:21 id_rsa
+
+BUDHIRAM SAHANI@LAPTOP-MAV6U7B1 MINGW64 ~/Desktop/key
+$ ssh -i id_rsa ec2-user@54.160.246.233
+   ,     #_
+   ~\_  ####_        Amazon Linux 2023
+  ~~  \_#####\
+  ~~     \###|
+  ~~       \#/ ___   https://aws.amazon.com/linux/amazon-linux-2023
+   ~~       V~' '->
+    ~~~         /
+      ~~._.   _/
+         _/ _/
+       _/m/'
+Last login: Sun Jul 27 18:15:32 2025 from 18.206.107.28
+
