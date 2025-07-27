@@ -1,0 +1,127 @@
+Explain the difference between CMD and ENTRYPOINT in docker.
+----------------------------------------------------------------------------------------------
+
+root@kali:~# mkdir DOCKER
+root@kali:~# cd Do
+-bash: cd: Do: No such file or directory
+root@kali:~# cd DOCKER/
+root@kali:~/DOCKER# LS
+LS: command not found
+root@kali:~/DOCKER# ls
+root@kali:~/DOCKER# 
+root@kali:~/DOCKER# mkdir cmd ep
+root@kali:~/DOCKER# ls
+cmd  ep
+root@kali:~/DOCKER# vim cmd/Dockerfile
+root@kali:~/DOCKER# vim ep/Dockerfile
+root@kali:~/DOCKER# docker build -t demo-cmd cmd/
+
+root@kali:~/DOCKER# docker build -t demo-ep ep/
+                                                                                                              0.0s
+root@kali:~/DOCKER# docker images | head -3
+REPOSITORY                    TAG       IMAGE ID       CREATED         SIZE
+demo-cmd                      latest    e9ab76957d26   12 days ago     8.31MB
+demo-ep                       latest    97b526ed7c5d   12 days ago     8.31MB
+root@kali:~/DOCKER# docker run demo-ep:latest 
+Hello
+root@kali:~/DOCKER# docker run demo-cmd:latest 
+Hello
+
+means both default behavior is same , but what is differences
+why docker come up with two instructions called CMD and Entrypoint
+
+when you se entrypoint you can overrite defult argument
+
+for example 
+
+root@kali:~/DOCKER# docker run demo-ep:latest world
+Hello world
+
+defult output is hello on top of that world got appended 
+
+
+whereas If I run same thing followed by world you will see an error 
+
+root@kali:~/DOCKER# docker run demo-cmd::latest world
+docker: invalid reference format
+
+Run 'docker run --help' for more information
+
+
+
+
+what happend in backed
+-------------------------------------------------------------------------------
+
+In ENTRYPOINT CASE
+
+root@kali:~/DOCKER# cat ep/Dockerfile 
+# use alpine for simplicity
+
+FROM alpine
+
+# set ENTRYPOINT
+ ["echo","Hello"]
+
+root@kali:~/DOCKER# 
+
+
+
+
+
+
+it works like 
+---------------------------------------In ENTRYPOINT case --------------------------------------
+# use alpine for simplicity
+
+FROM alpine
+
+# set ENTRYPOINT
+ENTRYPOINT ["echo","Hello world"]
+
+
+2nd example, what will in background
+-------------------
+
+FROM alpine
+
+# set ENTRYPOINT
+ENTRYPOINT ["echo","Hello my name is budhiram"]
+
+root@kali:~/DOCKER# docker run demo-ep:latest echo "my name is budhiram"
+Hello echo my name is budhiram
+
+
+
+
+
+
+in CMD case
+-----------
+
+# use alpine for simplicity
+
+FROM alpine
+
+# set CMD
+CMD ["world"]
+
+2nd example in CMD case
+------------------------
+
+root@kali:~/DOCKER# docker run demo-cmd:latest echo "my name is budhiram"
+my name is budhiram
+
+what will be happend in background
+
+FROM alpine
+
+# set CMD
+CMD ["echo","my name is budhiram"]
+
+
+
+
+
+NOTE: so in nutshell , when you are going with cmd , the default argument that you passed in deockerfile can be overriden whereas If you
+      go with entrypoint , the default argument will be appended with the command that you pass.
