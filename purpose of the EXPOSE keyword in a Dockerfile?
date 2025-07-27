@@ -1,0 +1,31 @@
+Question: What is the purpose of the EXPOSE keyword in a Dockerfile?
+
+1. Clarify what EXPOSE does:
+
+The EXPOSE keyword is just metadata.
+
+It documents which port the containerized application is expected to listen on.
+
+It does not actually publish the port to the host machine.
+
+
+
+2. Clear the common confusion:
+
+Many people think EXPOSE is used for publishing ports – this is wrong.
+
+To publish and map a container port to the host machine, you need the -p flag in docker run:
+
+docker run -p 8080:80 image-name
+
+
+
+3. How it is useful:
+
+If someone reads your Dockerfile, they immediately know which port the application is using.
+
+Tools like Docker Compose use this metadata to allow services to interact.
+
+For example, if a backend needs to talk to a database on port 3306, Docker Compose reads the EXPOSE 3306 from the DB image and allows the backend to connect.
+
+This makes service-to-service communication seamless
