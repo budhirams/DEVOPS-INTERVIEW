@@ -1,0 +1,34 @@
+User Reports slowness in the app, How would you approach this?
+you will run the TOP command or HTOP command to identify if there is any load on the server. So basically you will try to see the CPU utilization, memory utilization, and even disk utilization to understand if there is server load, because if there is load on the server, obviously there will be slowness in the application. So   if my application is running on Kubernetes? Even if it is a Kubernetes environment, end of the day, Kubernetes cluster is also made of Linux virtual machine nodes. So the same thing applies, but you might also have observability setup. So you can also get this information from prometheus or Grafana. This will be the first step, and let's say if this is the issue. So you will tell the interviewer, if this is the issue, I will try to find out which process is consuming more resources, and if there is a process that is least important, I will try to de-priorites the process, or I will try to kill the process. It totally depends according to the process. Now let's say this is not the issue.
+
+User Reports slowness in the app, How would you approach this?
+
+So you will run the TOP command or HTOP command to identify if there is any load on the server. So basically you will try to see the CPU utilization, memory utilization, and even disk utilization to understand if there is server load, because if there is load on the server, obviously there will be slowness in the application. So   if my application is running on Kubernetes? Even if it is a Kubernetes environment, end of the day, Kubernetes cluster is also made of Linux virtual machine nodes. So the same thing applies, but you might also have observability setup. So you can also get this information from prometheus or Grafana. This will be the first step, and let's say if this is the issue. So you will tell the interviewer, if this is the issue, I will try to find out which process is consuming more resources, and if there is a process that is least important, I will try to de-priorites the process, or I will try to kill the process. It totally depends according to the process. Now let's say this is not the issue.
+ps aux --sort=-%cpu | head -10
+ps aux --sort=-%mem | head -10
+
+
+There is no load on the server. Then I will try to see if there is any network latency. So to identify if there is any network latency, I will use ping or traceroute command. So using ping or traceroute, maybe ping google.com or ping any website, I will understand how quick or how slow is the response. Let's say if network latency is the issue, I will try to address this issue by introducing CDN to the platform, Content Delivery Network, or maybe I will deploy the application closer to the client's environment. Let's say client is in Australia and you have your server deployed in United States. This can be one of the reasons for network latency. And you can address this network latency either by introducing CDN or maybe deploying the application closer to the client's network. This will be your long-term solution.
+
+Let's say if network latency is also not the issue, I will see if this is issue with the bandwidth. This is very unlikely, but you can also check it by using iftop or nload. So these are the commands which can tell you if there is any load on the bandwidth side. Let's say bandwidth is also not the issue.
+iftop
+nload
+
+
+Let's say bandwidth is also not the issue, then I will try to look at logs of the application. That is, error logs or system logs to identify if there is some threat of the application or some function of the application that is causing this network latency. Maybe application is trying to talk to any upstream server, maybe database or anything, and there is a delay response from the upstream server, that can also be one of the potential issues.
+grep -i "timeout\|error\|exception" /var/log/myapp.log
+# Example log snippet
+2025-07-27 14:03:22 INFO Connecting to DB
+2025-07-27 14:03:32 INFO Received DB response   <-- 10 seconds delay
+
+
+
+Finally, I will just try to see if there is multiple processors running on that server. So, I will just try to use NETSTAT. So, using NETSTAT you can see if there are too many open connections on that server. So, you will try to close the connections that are not useful. This is how you can explain the interviewer or these are the steps that you can explain the interviewer and convince the interviewer. Of course, as I told you there can be multiple reasons.
+bis@kali:~/shellScripting$ netstat -anp
+
+find / -name cpuUsage.sh 2>/dev/null
+
+strace -tt -o /root/strace_output.txt /home/bis/.vscode-server/cli/servers/Stable-cb0c47c0cfaad0757385834bd89d410c78a856c0/server/out/vs/base/node/cpuUsage.sh
+strace -tt -e trace=network -o /root/strace_net.txt /path/to/cpuUsage.sh
+
+
