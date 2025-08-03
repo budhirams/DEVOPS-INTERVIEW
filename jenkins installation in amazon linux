@@ -1,0 +1,14 @@
+Jenkins recommends Java 11 or Java 17
+--------------------------------------------------------------
+
+yum install -y java-17-amazon-corretto
+
+sudo wget -O /etc/yum.repos.d/jenkins.repo \
+    https://pkg.jenkins.io/redhat/jenkins.repo
+sudo rpm --import https://pkg.jenkins.io/redhat/jenkins.io-2023.key
+sudo yum upgrade
+sudo yum install jenkins
+
+systemctl daemon-reload
+systemctl restart jenkins
+systemctl status jenkins
